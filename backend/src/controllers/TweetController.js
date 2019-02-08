@@ -8,15 +8,17 @@ module.exports = {
 
     async store(req, res) {
         const tweet = await Tweet.create(req.body);
-        req.io.emit('tweet', tweet);
+        req.io.emit('tweet', tweet); //É o que vai emitir para o resto da aplicação que um novo tweet foi criado. Isso faz com que a webpage nao precise ser atualizado. Isso da orque o io foi inserido no req
         return res.json(tweet);
     },
 
     async like(req, res) {
-        const tweet = await Tweet.findById(req.params.id);
-        tweet.set({likes: tweet.likes+1});
+        const tweet = await Tweet.findById(req.params.id); //aqui ele vai pegar o paramentro criado na rota.
+        tweet.set({
+            likes: tweet.likes + 1
+        });
         await tweet.save();
-        req.io.emit('like', tweet);
+        req.io.emit('like', tweet); //É o que vai emitir para o resto da aplicação que um novo tweet foi criado. Isso faz com que a webpage nao precise ser atualizado.
         return res.json(tweet);
     },
 };
